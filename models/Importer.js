@@ -5,18 +5,21 @@ export class Importer {
   constructor() { }
 
   listen = () => {
-    DirWatcherEmitter.on('changed', (arrayOfFiles) => {
-      // const jsonData = Promise.all(
-      //   arrayOfFiles.addedFiles
-      //     .map(file => this.import(`${arrayOfFiles.path}/${file}`))
-      // );
-      // jsonData.then(array => array.forEach(data => console.log(data)));
+    DirWatcherEmitter.on('changed', ({ path, addedFiles }) => {
+      /*
+        Using import (async)
+      */
+      const jsonData = Promise.all(
+        addedFiles
+          .map(file => this.import(`${path}/${file}`))
+      );
+      jsonData.then(array => array.forEach(data => console.log(data)));
 
-      const jsonData = arrayOfFiles.addedFiles
-        .map(file => {
-          const cb = (js) => js;
-          this.importSync(`${arrayOfFiles.path}/${file}`, js => console.log(js));
-        });
+      /*
+        Using importSync
+      */
+      // const jsonData = addedFiles
+      //   .forEach(file => this.importSync(`${path}/${file}`, json => console.log(json)));
     });
   }
 
