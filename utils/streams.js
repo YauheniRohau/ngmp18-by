@@ -2,25 +2,24 @@ const fs = require('fs');
 const csv = require('csvtojson');
 const through = require('through2');
 const parseArgs = require('minimist');
+const path = require('path');
+const request = require('request');
+const https = require('https');
 
+const CSS_URL = 'https://drive.google.com/uc?export=download&id=1tCm9Xb4mok4Egy2WjGqdYYkrGia0eh7X';
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     a: 'action',
     h: 'help',
     f: 'file',
+    p: 'path',
   },
   unknown: (arg) => {
     console.error('Unknown option: ', arg);
     return false;
   }
 });
-
-const inputFile = argv.file;
-
-if (!fs.existsSync(inputFile)) {
-  throw new Error('File not exist!');
-}
 
 function end(done) {
   this.push(null);
@@ -52,11 +51,23 @@ function transform(data, encoding, next) {
 }
 
 function outputFile() {
+  const inputFile = argv.file;
+
+  if (!fs.existsSync(inputFile)) {
+    throw new Error('File not exist!');
+  }
+
   return fs.createReadStream(inputFile)
     .pipe(process.stdout);
 }
 
 function convertFromFile() {
+  const inputFile = argv.file;
+
+  if (!fs.existsSync(inputFile)) {
+    throw new Error('File not exist!');
+  }
+
   return csv()
     .fromFile(inputFile)
     .on('done', (error) => {
@@ -65,6 +76,12 @@ function convertFromFile() {
 }
 
 function convertToFile() {
+  const inputFile = argv.file;
+
+  if (!fs.existsSync(inputFile)) {
+    throw new Error('File not exist!');
+  }
+
   const writeStream = fs.createWriteStream(inputFile.replace('.csv', '.json'));
   writeStream.write('[');
 
@@ -74,6 +91,32 @@ function convertToFile() {
       if (error) console.log('Error convert to file');
       else writeStream.write(']');
     })
+}
+
+function cssBundler() {
+  const cssPath = argv.path;
+
+  if (!fs.existsSync(cssPath)) {
+    throw new Error('Path not exist!');
+  }
+
+  const outputPath = path.join(cssPath, 'bundle.css');
+  const destinationStream = fs.createWriteStream(outputPath);
+
+  fs.readdir(cssPath, (err, files) => {
+    if (err) throw err;
+
+    files.forEach((file) => {
+      fs.readFile(path.join(cssPath, file), function(err, data) {
+        if (err) {
+          throw err;
+        }
+        destinationStream.write(data);
+      });
+    });
+  });
+
+  request(CSS_URL).pipe(destinationStream);
 }
 
 function help() {
@@ -91,6 +134,7 @@ const actionsMap = {
   outputFile,
   convertFromFile: () => convertFromFile().pipe(process.stdout),
   convertToFile,
+  cssBundler,
 };
 
 if (argv.help) {
