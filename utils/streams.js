@@ -1,7 +1,7 @@
 const fs = require('fs');
 const csv = require('csvtojson');
 const through = require('through2');
-var parseArgs = require('minimist');
+const parseArgs = require('minimist');
 
 
 const argv = parseArgs(process.argv.slice(2), {
@@ -17,6 +17,10 @@ const argv = parseArgs(process.argv.slice(2), {
 });
 
 const inputFile = argv.file;
+
+if (!fs.existsSync(inputFile)) {
+  throw new Error('File not exist!');
+}
 
 function end(done) {
   this.push(null);
@@ -53,21 +57,32 @@ function outputFile() {
 }
 
 function convertFromFile() {
-  const readStream = fs.createReadStream(inputFile);
-  let resultJson = [];
   return csv()
-    .fromStream(readStream)
-    .on('csv', (csvRow) => {
-      return csvRow;
-    })
+    .fromFile(inputFile)
     .on('done', (error) => {
-      return resultJson;
-    });
+      if (error) console.log('Error convert to file');
+    })
 }
 
 function convertToFile() {
+  const writeStream = fs.createWriteStream(inputFile.replace('.csv', '.json'));
+  writeStream.write('[');
+
   return convertFromFile()
-    .pipe(fs.createWriteStream('test.json'));
+    .on('json', json => writeStream.write(`${JSON.stringify(json)},\n`))
+    .on('done', (error) => {
+      if (error) console.log('Error convert to file');
+      else writeStream.write(']');
+    })
+}
+
+function help() {
+  console.log(`
+    '--help -h'       Show this help message
+    '--action -a'     Enter type of action (reverse, transform, outputFile, convertFromFile, convertToFile, css-bundle)
+    '--file -f'       Path to file
+    '--path -p'       Path to directory
+    `);
 }
 
 const actionsMap = {
@@ -78,8 +93,14 @@ const actionsMap = {
   convertToFile,
 };
 
-const action = actionsMap[argv.action];
+if (argv.help) {
+  help();
+} else {
+  const action = actionsMap[argv.action]
+    || function() { console.log('Action not defined.') };
+  action();
+}
 
-action();
+
 
 
