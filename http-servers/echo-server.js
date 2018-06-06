@@ -3,18 +3,7 @@ import http from 'http';
 const port = 3000;
 
 const requestHandler = (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  const product = {
-    id: 1,
-    name: 'Supreme T-Shirt',
-    brand: 'Supreme',
-    price: 99.99,
-    options: [
-      { color: 'blue' },
-      { size: 'XL' }
-    ]
-  };
-  res.end(JSON.stringify(product));
+  req.pipe(res);
 };
 
 const server = http.createServer(requestHandler);
