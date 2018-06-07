@@ -1,5 +1,15 @@
 const parsedCookies = () => (req, res, next) => {
-  req.parsedCookies = req.headers.cookie;
+  req.parsedCookies = req.headers.cookie
+    .split('; ')
+    .reduce((accum, current) => {
+      const keyValue = current.split('=');
+      const key = keyValue[0];
+      const value = keyValue[1];
+      return Object.assign(
+        accum,
+        { [key]: value },
+      )
+    }, {});
   next();
 };
 
