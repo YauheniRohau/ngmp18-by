@@ -1,4 +1,5 @@
 const parsedCookies = () => (req, res, next) => {
+  if (!req.headers.cookie) return next();
   req.parsedCookies = req.headers.cookie
     .split('; ')
     .reduce((accum, current) => {
