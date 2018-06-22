@@ -1,3 +1,9 @@
 {
-    "name": "Node.js Homework Application"
+    "name": "Node.js Homework Application",
+    "credentials": {
+      "email": "rogoff13@gmail.com",
+      "username": "rogoff",
+      "password": "11111111"
+    },
+    "jwtSecretKey": "rogoffSecret"
 }
