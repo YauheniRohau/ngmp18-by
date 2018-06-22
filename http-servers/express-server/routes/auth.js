@@ -1,43 +1,21 @@
 import { Router } from 'express';
-import jwt from 'jsonwebtoken';
+import passport from 'passport';
 
-import config from '../../../config/config.json'
+import  * as auth from '../controllers/auth';
 
 const router = Router();
 
-router
-  .post('/', (req, res) => {
-    const { email, username, password } = req.body;
-    const { email: hardcodedEmail, password: hardcodedPassword } = config.credentials;
-    const isCredsNotMatch = (email !== hardcodedEmail) || (password !== hardcodedPassword);
+router.post('/', auth.standart);
 
-    if (isCredsNotMatch) {
-      return res.send({
-        code: 404,
-        message: "Not found",
-        data: "Email or password incorrect"
-      });
-    }
+router.post('/local', auth.authPassport('local'));
 
-    const token = jwt.sign(
-      {
-        email,
-        password,
-      },
-      config.jwtSecretKey,
-    );
+router.get('/facebook', passport.authenticate('facebook'));
+router.get('/facebook/callback/', auth.authPassport('facebook'));
 
-    return res.send({
-      code: 200,
-      message: "OK",
-      data: {
-        user: {
-          email,
-          username,
-        }
-      },
-      token,
-    });
-  });
+router.get('/twitter', passport.authenticate('twitter'));
+router.get('/twitter/callback/', auth.authPassport('twitter'));
+
+router.get('/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+router.get('/google/callback/', auth.authPassport('google'));
 
 export default router;

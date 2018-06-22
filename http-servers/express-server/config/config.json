@@ -1,0 +1,28 @@
+{
+  "credentials": {
+    "email": "rogoff13@gmail.com",
+    "username": "rogoff",
+    "password": "11111111"
+  },
+  "facebookStrategy": {
+    "clientID": "407007683042584",
+    "clientSecret": "ca92df34df0f13c5b9e16cc2a5372523",
+    "callbackURL": "http://localhost:3000/auth/facebook/callback"
+  },
+  "twitterStrategy": {
+    "consumerKey": "8iOXq0QU5vz0T6PSBud5rheyR",
+    "consumerSecret": "fL1HFASoToUi8wiApRTthOKxhyY6WmzhN8Zko5Uy8DzpndUGhH",
+    "callbackURL": "http://127.0.0.1:3000/auth/twitter/callback"
+  },
+  "googleStrategy": {
+    "clientID": "652151790328-sqd3svfk5apfq4nsiiihs77788jfvj85.apps.googleusercontent.com",
+    "clientSecret": "gArfbOpFvQ6uf7mgOeLirRXG",
+    "callbackURL": "http://localhost:3000/auth/google/callback"
+  },
+  "jwtSecretKey": "rogoffSecret",
+  "sessionConfig": {
+    "secret": "SECRET",
+    "resave": false,
+    "saveUninitialized": false
+  }
+}
