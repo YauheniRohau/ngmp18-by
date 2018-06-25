@@ -6,8 +6,9 @@ const router = Router();
 router
   .get('/', (req, res) => {
     return getAllUsers()
-      .then(users =>
-        res.send(`All users: ${users}`))
+      .then(users => {
+        res.send(`All users: ${JSON.stringify(users)}`);
+      })
       .catch(err => res.send(err));
   });
 

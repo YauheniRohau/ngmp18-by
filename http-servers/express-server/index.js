@@ -2,7 +2,7 @@ import app from './app';
 const port = process.env.PORT || 8080;
 
 //Models
-var models = require("./models");
+import models from './models';
 
 //Sync Database
 models.sequelize.sync().then(function() {
@@ -14,5 +14,5 @@ models.sequelize.sync().then(function() {
 
   console.log(err, "Something went wrong with the Database Update!")
 
-  });
+});
 
