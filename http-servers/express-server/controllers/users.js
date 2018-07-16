@@ -1,10 +1,7 @@
 import db from '../models';
 
 const getAllUsers = () => {
-  return db.Users.findAll()
-    .then(users => {
-      return JSON.stringify(users);
-    });
+  return db.Users.findAll();
 };
 
 export default getAllUsers;

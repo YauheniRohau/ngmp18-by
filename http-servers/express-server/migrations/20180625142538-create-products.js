@@ -14,14 +14,8 @@ module.exports = {
       type: {
         type: Sequelize.STRING
       },
-      email: {
-        type: Sequelize.STRING
-      },
       price: {
         type: Sequelize.INTEGER
-      },
-      reviews: {
-        type: Sequelize.STRING
       },
       exist: {
         type: Sequelize.BOOLEAN
