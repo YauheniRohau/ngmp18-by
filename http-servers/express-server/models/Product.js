@@ -12,6 +12,8 @@ const Product = new Schema({
   },
   price: {
     type: Number,
+    min: 0,
+    max: 100
   },
   exist: {
     type: Boolean,

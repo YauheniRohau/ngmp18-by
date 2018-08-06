@@ -1,16 +1,17 @@
-import db from '../models';
+import { Product } from '../models';
 
-export const getAllProducts = () => {
-  return db.Products.findAll();
-};
+export const getAllProducts = (req, res) => {
+  return Product.find({}, (err, products) => {
+    if (err) return console.error(err);
+    console.log(products);
+  });
+}
 
 export const addProduct = ({ name, type, price, exist }) => {
-  return db.Products.create({ name, type, price, exist });
+  return Product.create({ name, type, price, exist });
 };
 
 export const getProductWithId = (id) => {
-  return db.Products.findAll({
-    where: { id },
-  });
+  return Product.findById(id);
 };
 
