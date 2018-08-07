@@ -1,10 +1,13 @@
 import { User } from '../models';
 
-const getAllUsers = () => {
+export const getAllUsers = () => {
   return User.find({}, (err, users) => {
     if (err) return console.error(err);
-    console.log(users);
   });
 };
 
-export default getAllUsers;
+export const deleteUserById = (id) => {
+  return User.findByIdAndRemove(id, (err, user) => {
+    if (err) return console.error(err);
+  });
+};

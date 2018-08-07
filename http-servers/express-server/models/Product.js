@@ -18,7 +18,14 @@ const Product = new Schema({
   exist: {
     type: Boolean,
     default: false
-  }
+  },
+  lastModifiedDate: Date,
+});
+
+Product.pre('save', function(next) {
+  const date = new Date();
+  this.lastModifiedDate = date;
+  next();
 });
 
 export default mongoose.model('Product', Product);

@@ -1,17 +1,22 @@
 import { Product } from '../models';
 
-export const getAllProducts = (req, res) => {
+export const getAllProducts = () => {
   return Product.find({}, (err, products) => {
     if (err) return console.error(err);
-    console.log(products);
   });
 }
 
-export const addProduct = ({ name, type, price, exist }) => {
-  return Product.create({ name, type, price, exist });
+export const addProduct = (product) => {
+  return Product.create(product);
 };
 
 export const getProductWithId = (id) => {
   return Product.findById(id);
+};
+
+export const deleteProductById = (id) => {
+  return Product.findByIdAndRemove(id, (err, product) => {
+    if (err) return console.error(err);
+  });
 };
 

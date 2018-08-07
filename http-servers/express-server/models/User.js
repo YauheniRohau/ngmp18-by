@@ -15,7 +15,14 @@ const User = new Schema({
     type: String,
     min: 8,
     max: 20,
-  }
+  },
+  lastModifiedDate: Date,
+});
+
+User.pre('save', function(next) {
+  const date = new Date();
+  this.lastModifiedDate = date;
+  next();
 });
 
 export default mongoose.model('User', User);
