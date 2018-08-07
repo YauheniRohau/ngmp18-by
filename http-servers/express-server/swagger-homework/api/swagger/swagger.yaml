@@ -1,0 +1,337 @@
+---
+swagger: "2.0"
+info:
+  description: NodeJS Mentoring Programm
+  version: 1.0.0
+  title: Homework8
+  contact:
+    email: Yauheni_Rohau@epam.com
+host: localhost:10010
+basePath: /api
+tags:
+- name: products
+  description: API for products
+- name: users
+  description: API for users
+- name: cities
+  description: API for cities
+schemes:
+- http
+paths:
+  /products:
+    get:
+      tags:
+      - products
+      summary: Get all products
+      description: Get all products
+      operationId: getAllProducts
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Product'
+    post:
+      tags:
+      - products
+      summary: Add product
+      description: Add product
+      operationId: addProduct
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: data for product
+        required: false
+        schema:
+          $ref: '#/definitions/Product'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Product'
+    x-swagger-router-controller: products
+  /products/{id}:
+    get:
+      tags:
+      - products
+      summary: Get product with id
+      description: Get product with id
+      operationId: getProductWithId
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: Product id
+        required: true
+        type: string
+      responses:
+        200:
+          description: results
+          schema:
+            $ref: '#/definitions/Product'
+        400:
+          description: Error
+          schema:
+            type: object
+    delete:
+      tags:
+      - products
+      summary: Delete product by id
+      description: Delete product by id
+      operationId: deleteProductById
+      parameters:
+      - name: id
+        in: path
+        description: Product id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+        400:
+          description: Error
+          schema:
+            type: object
+    x-swagger-router-controller: products
+  /cities:
+    get:
+      tags:
+      - cities
+      summary: Get all cities
+      description: Get all cities
+      operationId: getAllCities
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/City'
+        400:
+          description: Error
+          schema:
+            type: object
+    post:
+      tags:
+      - cities
+      summary: Add city
+      description: Add city
+      operationId: addCity
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: data for product
+        required: false
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/City'
+        400:
+          description: Error
+          schema:
+            type: object
+    x-swagger-router-controller: cities
+  /cities/random:
+    get:
+      tags:
+      - cities
+      summary: Get random city
+      description: Get random city
+      operationId: getRandomCity
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/City'
+        400:
+          description: Error
+          schema:
+            type: object
+    x-swagger-router-controller: cities
+  /cities/{id}:
+    put:
+      tags:
+      - cities
+      summary: Update city by id
+      description: Update city by id
+      operationId: updateCityById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: City id
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: data to update
+        required: false
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        200:
+          description: results
+          schema:
+            type: object
+        400:
+          description: Error
+          schema:
+            type: object
+    delete:
+      tags:
+      - cities
+      summary: Delete city by id
+      description: Delete city by id
+      operationId: deleteCityById
+      parameters:
+      - name: id
+        in: path
+        description: City id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+        400:
+          description: Error
+          schema:
+            type: object
+    x-swagger-router-controller: cities
+  /users:
+    get:
+      tags:
+      - users
+      summary: Get all users
+      description: Get all users
+      operationId: getAllUsers
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        400:
+          description: Error
+          schema:
+            type: object
+    x-swagger-router-controller: users
+  /users/{id}:
+    delete:
+      tags:
+      - users
+      summary: Delete user by id
+      description: Delete user by id
+      operationId: deleteUserById
+      parameters:
+      - name: id
+        in: path
+        description: User id
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+        400:
+          description: Error
+          schema:
+            type: object
+    x-swagger-router-controller: users
+definitions:
+  Product:
+    type: object
+    required:
+    - name
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+        minLength: 3
+      price:
+        type: number
+      exist:
+        type: boolean
+        default: false
+    example:
+      name: name
+      type: type
+      price: 100
+      exist: true
+  Location:
+    type: object
+    properties:
+      lat:
+        type: number
+      long:
+        type: number
+    example:
+      lat: 52.8008
+      long: 23.0274
+  City:
+    type: object
+    required:
+    - capital
+    - name
+    properties:
+      name:
+        type: string
+      country:
+        type: string
+      capital:
+        type: boolean
+        default: false
+      location:
+        $ref: '#/definitions/Location'
+    example:
+      country: country
+      capital: false
+      name: name
+      location: null
+      lat: 52.8008
+      long: 23.0274
+  User:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+        minLength: 8
+        maxLength: 20
+    example:
+      password: password
+      username: username
+      email: email

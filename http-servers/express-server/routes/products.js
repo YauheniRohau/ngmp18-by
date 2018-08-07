@@ -11,7 +11,7 @@ const router = Router();
 router
   .get('/', (req, res) => {
     return getAllProducts()
-      .then(products => res.end(`All products: ${JSON.stringify(products)}`))
+      .then(products => res.json(products))
       .catch(err => res.send(err));
   })
   .post('/', (req, res) => {

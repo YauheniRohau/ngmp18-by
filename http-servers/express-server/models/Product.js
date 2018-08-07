@@ -1,4 +1,4 @@
-import mongoose from '../config/mongoose';
+const mongoose = require('../config/mongoose');
 
 const Schema = mongoose.Schema;
 
@@ -28,4 +28,4 @@ Product.pre('save', function(next) {
   next();
 });
 
-export default mongoose.model('Product', Product);
+module.exports = mongoose.model('Product', Product);
