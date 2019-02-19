@@ -1,10 +1,15 @@
 import { Router } from 'express';
+import getAllUsers from '../controllers/users';
 
 const router = Router();
 
 router
-    .get('/', (req, res) => {
-      res.end('All users');
+  .get('/', (req, res) => {
+    return getAllUsers()
+      .then(users => {
+        res.send(`All users: ${JSON.stringify(users)}`);
+      })
+      .catch(err => res.send(err));
   });
 
 export default router;
